@@ -6,6 +6,7 @@ import br.com.malandrim.loansapplication.entity.Customer;
 import br.com.malandrim.loansapplication.entity.Loan;
 import br.com.malandrim.loansapplication.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,10 +25,8 @@ public class CustomerController {
             ){
         Customer customer = customerDto.toCustomer();
         List<Loan> loans = customerService.getLoans(customer);
-        CustomerView customerView =
-                new CustomerView(customerDto.name(), loans);
         return ResponseEntity
-                .ok()
-                .body(customerView);
+                .status(HttpStatus.OK)
+                .body(new CustomerView(customer.name(), loans));
     }
 }
